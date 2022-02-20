@@ -19,7 +19,7 @@ const ContactList = () => {
 							<div className='col'>
 								<p className='h3'>
 									Contact Manager
-									<Link to={'/contacts/add'} className='btn btn-primary ms-2'>
+									<Link to={'/contacts/add'} className='btn btn-success ms-2'>
 										<FontAwesomeIcon icon={faPlus} className='me-1' />
 										New
 									</Link>
@@ -67,7 +67,7 @@ const ContactList = () => {
 											<img
 												className='contact-img'
 												src='http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png'
-												alt=''
+												alt={`name`}
 											/>
 										</div>
 										<div className='col-md-7'>
