@@ -1,0 +1,48 @@
+{
+	"contacts": [
+		{
+			"id": "111",
+			"name": "Aleh",
+			"photo": "http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png",
+			"mobile": "+375336720627",
+			"email": "Aleh@gmail.com",
+			"title": "Software Engineer",
+			"compani": "Apple",
+			"groupId": "1"
+		},
+		{
+			"id": "222",
+			"name": "Igor",
+			"photo": "http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png",
+			"mobile": "+375296535624",
+			"email": "Igor@gmail.com",
+			"title": "HVAC Engineer",
+			"compani": "Daikin",
+			"groupId": "2"
+		},
+		{
+			"id": "333",
+			"name": "Max",
+			"photo": "http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png",
+			"mobile": "+375336546627",
+			"email": "Max@gmail.com",
+			"title": "Brother",
+			"compani": "",
+			"groupId": "3"
+		}
+	],
+	"groups": [
+		{
+			"id": "1",
+			"name": "Colleague"
+		},
+		{
+			"id": "2",
+			"name": "Friends"
+		},
+		{
+			"id": "3",
+			"name": "Family"
+		}
+	]
+}
