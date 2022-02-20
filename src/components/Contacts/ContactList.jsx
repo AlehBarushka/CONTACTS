@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -8,8 +8,29 @@ import {
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ContactService } from '../../services/ContactService';
 
 const ContactList = () => {
+	const [state, setState] = useState({
+		isLoading: false,
+		contacts: [],
+		error: '',
+	});
+	console.log(state);
+
+	useEffect(() => {
+		const getAllContacts = async () => {
+			try {
+				setState({ ...state, isLoading: true });
+				let response = await ContactService.getAllContacts();
+				setState({ ...state, isLoading: false, contacts: response.data });
+			} catch (error) {
+				setState({ ...state, isLoading: false, error: error.message });
+			}
+		};
+		getAllContacts();
+	}, []);
+
 	return (
 		<>
 			<section className='contact-search p-3'>
