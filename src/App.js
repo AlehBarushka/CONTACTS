@@ -8,7 +8,6 @@ import ViewContact from './components/Contacts/ViewContact';
 import EditContact from './components/Contacts/EditContact';
 
 import './App.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const App = () => {
 	return (
