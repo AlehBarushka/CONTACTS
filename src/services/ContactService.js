@@ -23,4 +23,9 @@ export class ContactService {
 		let dataURL = `${this.serverURL}/groups/${groupId}`;
 		return axios.get(dataURL);
 	}
+
+	static createContact(contact) {
+		let dataURL = `${this.serverURL}/contacts`;
+		return axios.post(dataURL, contact);
+	}
 }
