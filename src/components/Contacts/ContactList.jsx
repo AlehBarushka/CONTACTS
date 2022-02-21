@@ -87,7 +87,7 @@ const ContactList = () => {
 										<div className='col-md-4'>
 											<img
 												className='contact-img'
-												src='http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png'
+												src='https://cdn-icons-png.flaticon.com/512/146/146031.png'
 												alt={`name`}
 											/>
 										</div>

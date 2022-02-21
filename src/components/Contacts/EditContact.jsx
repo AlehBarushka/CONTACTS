@@ -79,7 +79,7 @@ const EditContact = () => {
 						</div>
 						<div className='col-md-6'>
 							<img
-								src='http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png'
+								src='https://cdn-icons-png.flaticon.com/512/146/146031.png'
 								alt={`name of current contact`}
 								className='contact-img'
 							/>
