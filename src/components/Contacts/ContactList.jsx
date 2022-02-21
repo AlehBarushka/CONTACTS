@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ContactService } from '../../services/ContactService';
+import Preloader from '../../common/Preloader';
 
 const ContactList = () => {
 	const [state, setState] = useState({
@@ -16,7 +17,6 @@ const ContactList = () => {
 		contacts: [],
 		error: '',
 	});
-	console.log(state);
 
 	useEffect(() => {
 		const getAllContacts = async () => {
@@ -29,7 +29,10 @@ const ContactList = () => {
 			}
 		};
 		getAllContacts();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	let { isLoading, contacts, error } = state;
 
 	return (
 		<>
@@ -77,58 +80,75 @@ const ContactList = () => {
 					</div>
 				</div>
 			</section>
-			<section className='contact-list'>
-				<div className='container'>
-					<div className='row'>
-						<div className='col-md-6'>
-							<div className='card'>
-								<div className='card-body'>
-									<div className='row align-items-center d-flex justify-content-around'>
-										<div className='col-md-4'>
-											<img
-												className='contact-img'
-												src='https://cdn-icons-png.flaticon.com/512/146/146031.png'
-												alt={`name`}
-											/>
+			{isLoading ? (
+				<Preloader />
+			) : (
+				<section className='contact-list'>
+					<div className='container'>
+						<div className='row'>
+							{contacts.length > 0 &&
+								contacts.map((contact) => {
+									return (
+										<div className='col-md-6' key={contact.id}>
+											<div className='card my-2'>
+												<div className='card-body'>
+													<div className='row align-items-center d-flex justify-content-around'>
+														<div className='col-md-4'>
+															<img
+																className='contact-img'
+																src={contact.photo}
+																alt={`${contact.name}'s avatar`}
+															/>
+														</div>
+														<div className='col-md-7'>
+															<ul className='list-group'>
+																<li className='list-group-item list-group-item-action'>
+																	Name:
+																	<span className='ms-1 fw-bold'>
+																		{contact.name}
+																	</span>
+																</li>
+																<li className='list-group-item list-group-item-action'>
+																	Mobile number:
+																	<span className='ms-1 fw-bold'>
+																		{contact.mobile}
+																	</span>
+																</li>
+																<li className='list-group-item list-group-item-action'>
+																	Email:
+																	<span className='ms-1 fw-bold'>
+																		{contact.email}
+																	</span>
+																</li>
+															</ul>
+														</div>
+														<div className='col-md-1 d-flex flex-column align-items-center'>
+															<Link
+																to={`/contacts/veiw/${contact.id}`}
+																className='btn btn-primary my-1'
+															>
+																<FontAwesomeIcon icon={faEye} />
+															</Link>
+															<Link
+																to={`/contacts/edit/:contactId`}
+																className='btn btn-warning my-1'
+															>
+																<FontAwesomeIcon icon={faPen} />
+															</Link>
+															<button className='btn btn-danger my-1'>
+																<FontAwesomeIcon icon={faTrash} />
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
-										<div className='col-md-7'>
-											<ul className='list-group'>
-												<li className='list-group-item list-group-item-action'>
-													Name: <span className='fw-bold'>Aleh</span>
-												</li>
-												<li className='list-group-item list-group-item-action'>
-													Mobile number:
-													<span className='fw-bold'>+375336720627</span>
-												</li>
-												<li className='list-group-item list-group-item-action'>
-													Email: <span className='fw-bold'>Aleh@gmail.com</span>
-												</li>
-											</ul>
-										</div>
-										<div className='col-md-1 d-flex flex-column align-items-center'>
-											<Link
-												to={`/contacts/veiw/:contactId`}
-												className='btn btn-primary my-1'
-											>
-												<FontAwesomeIcon icon={faEye} />
-											</Link>
-											<Link
-												to={`/contacts/edit/:contactId`}
-												className='btn btn-warning my-1'
-											>
-												<FontAwesomeIcon icon={faPen} />
-											</Link>
-											<button className='btn btn-danger my-1'>
-												<FontAwesomeIcon icon={faTrash} />
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
+									);
+								})}
 						</div>
 					</div>
-				</div>
-			</section>
+				</section>
+			)}
 		</>
 	);
 };
