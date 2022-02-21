@@ -3,31 +3,31 @@
 		{
 			"id": "111",
 			"name": "Aleh",
-			"photo": "http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png",
+			"photo": "https://cdn-icons-png.flaticon.com/512/146/146031.png",
 			"mobile": "+375336720627",
 			"email": "Aleh@gmail.com",
 			"title": "Software Engineer",
-			"compani": "Apple",
+			"company": "Apple",
 			"groupId": "1"
 		},
 		{
 			"id": "222",
 			"name": "Igor",
-			"photo": "http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png",
+			"photo": "https://cdn-icons-png.flaticon.com/512/146/146031.png",
 			"mobile": "+375296535624",
 			"email": "Igor@gmail.com",
 			"title": "HVAC Engineer",
-			"compani": "Daikin",
+			"company": "Daikin",
 			"groupId": "2"
 		},
 		{
 			"id": "333",
 			"name": "Max",
-			"photo": "http://assets.stickpng.com/images/585e4bcdcb11b227491c3396.png",
+			"photo": "https://cdn-icons-png.flaticon.com/512/146/146031.png",
 			"mobile": "+375336546627",
 			"email": "Max@gmail.com",
 			"title": "Brother",
-			"compani": "",
+			"company": "",
 			"groupId": "3"
 		}
 	],
