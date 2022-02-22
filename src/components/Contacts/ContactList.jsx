@@ -32,6 +32,20 @@ const ContactList = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const handleOnDelete = async (contactId) => {
+		try {
+			let response = await ContactService.deleteContact(contactId);
+
+			if (response) {
+				setState({ ...state, isLoading: true });
+				let response = await ContactService.getAllContacts();
+				setState({ ...state, isLoading: false, contacts: response.data });
+			}
+		} catch (error) {
+			setState({ ...state, isLoading: false, error: error.message });
+		}
+	};
+
 	let { isLoading, contacts, error } = state;
 
 	return (
@@ -130,12 +144,15 @@ const ContactList = () => {
 																<FontAwesomeIcon icon={faEye} />
 															</Link>
 															<Link
-																to={`/contacts/edit/:contactId`}
+																to={`/contacts/edit/${contact.id}`}
 																className='btn btn-warning my-1'
 															>
 																<FontAwesomeIcon icon={faPen} />
 															</Link>
-															<button className='btn btn-danger my-1'>
+															<button
+																onClick={() => handleOnDelete(contact.id)}
+																className='btn btn-danger my-1'
+															>
 																<FontAwesomeIcon icon={faTrash} />
 															</button>
 														</div>
