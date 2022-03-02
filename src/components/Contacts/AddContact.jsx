@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ContactService } from '../../services/ContactService';
+import ContactForm from './ContactForm';
 
 const AddContact = () => {
 	const [state, setState] = useState({
 		isLoading: false,
-		contact: {
-			name: '',
-			photo: '',
-			mobile: '',
-			email: '',
-			company: '',
-			title: '',
-			groupId: '',
-		},
+		contact: {},
 		groups: [],
 		error: '',
 	});
@@ -34,20 +27,9 @@ const AddContact = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const updateInput = (e) => {
-		setState({
-			...state,
-			contact: {
-				...state.contact,
-				[e.target.name]: e.target.value,
-			},
-		});
-	};
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const onSubmitForm = async (values) => {
 		try {
-			let response = await ContactService.createContact(state.contact);
+			let response = await ContactService.createContact(values);
 			if (response) {
 				navigate('/contacts/list', { replace: true });
 			}
@@ -57,7 +39,7 @@ const AddContact = () => {
 		}
 	};
 
-	const { isLoading, contact, groups, error } = state;
+	const { groups } = state;
 
 	return (
 		<>
@@ -76,100 +58,13 @@ const AddContact = () => {
 					</div>
 					<div className='row'>
 						<div className='col-md-4'>
-							<form onSubmit={handleSubmit}>
-								<div className='mb-2'>
-									<input
-										name='name'
-										required={true}
-										value={contact.name}
-										onChange={updateInput}
-										type='text'
-										className='form-control'
-										placeholder='Name'
-									/>
-								</div>
-								<div className='mb-2'>
-									<input
-										name='photo'
-										value={contact.photo}
-										onChange={updateInput}
-										type='text'
-										className='form-control'
-										placeholder='Photo URL'
-									/>
-								</div>
-								<div className='mb-2'>
-									<input
-										name='mobile'
-										required={true}
-										value={contact.mobile}
-										onChange={updateInput}
-										type='number'
-										className='form-control'
-										placeholder='Mobile number'
-									/>
-								</div>
-								<div className='mb-2'>
-									<input
-										name='email'
-										required={true}
-										value={contact.email}
-										onChange={updateInput}
-										type='email'
-										className='form-control'
-										placeholder='Email'
-									/>
-								</div>
-								<div className='mb-2'>
-									<input
-										name='company'
-										required={true}
-										value={contact.company}
-										onChange={updateInput}
-										type='text'
-										className='form-control'
-										placeholder='Company'
-									/>
-								</div>
-								<div className='mb-2'>
-									<input
-										name='title'
-										required={true}
-										value={contact.title}
-										onChange={updateInput}
-										type='text'
-										className='form-control'
-										placeholder='Title'
-									/>
-								</div>
-								<div className='mb-2'>
-									<select
-										name='groupId'
-										required={true}
-										value={contact.groupId}
-										onChange={updateInput}
-										className='form-control'
-									>
-										<option value=''>Select a group</option>
-										{groups.length > 0 &&
-											groups.map((group) => {
-												return (
-													<option key={group.id} value={group.id}>
-														{group.name}
-													</option>
-												);
-											})}
-									</select>
-								</div>
-								<div className='mb-2'>
-									<button type='submit' className='btn btn-success'>
-										Add
-									</button>
-									<Link to={'/contacts/list'} className='btn btn-dark ms-2'>
-										Close
-									</Link>
-								</div>
-							</form>
+							<ContactForm
+								groups={groups}
+								onSubmitForm={onSubmitForm}
+								btnColor='btn-success'
+							>
+								Add
+							</ContactForm>
 						</div>
 					</div>
 				</div>
