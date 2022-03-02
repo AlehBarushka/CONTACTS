@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ContactService } from '../../services/ContactService';
+import userImg from '../../assets/user.png';
 import Preloader from '../../common/Preloader';
 
 const ContactList = () => {
@@ -46,7 +47,7 @@ const ContactList = () => {
 		}
 	};
 
-	let { isLoading, contacts, error } = state;
+	let { isLoading, contacts } = state;
 
 	return (
 		<>
@@ -110,7 +111,7 @@ const ContactList = () => {
 														<div className='col-md-4'>
 															<img
 																className='contact-img'
-																src={contact.photo}
+																src={userImg}
 																alt={`${contact.name}'s avatar`}
 															/>
 														</div>

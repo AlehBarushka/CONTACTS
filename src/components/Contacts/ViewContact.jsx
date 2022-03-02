@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Preloader from '../../common/Preloader';
 import { ContactService } from '../../services/ContactService';
+
+import Preloader from '../../common/Preloader';
+import userImg from '../../assets/user.png';
 
 const ViewContact = () => {
 	const { contactId } = useParams();
@@ -33,7 +35,7 @@ const ViewContact = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contactId]);
 
-	let { isLoading, contact, error, group } = state;
+	let { isLoading, contact, group } = state;
 
 	return (
 		<>
@@ -60,9 +62,9 @@ const ViewContact = () => {
 					<section className='veiw-contact mt-3'>
 						<div className='container'>
 							<div className='row align-items-center'>
-								<div className='col-md-4'>
+								<div className='col-md-4 d-flex justify-content-center'>
 									<img
-										src={contact.photo}
+										src={userImg}
 										alt={`${contact.name}'s avatar`}
 										className='contact-img'
 									/>
