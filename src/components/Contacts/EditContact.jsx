@@ -5,6 +5,7 @@ import { ContactService } from '../../services/ContactService';
 import userImg from '../../assets/user.png';
 import Preloader from '../../common/Preloader';
 import ContactForm from './ContactForm';
+import Title from './Title';
 
 const EditContact = () => {
 	let { contactId } = useParams();
@@ -49,50 +50,35 @@ const EditContact = () => {
 		}
 	};
 
-	const { isLoading, groups } = state;
+	const { isLoading, groups, contact } = state;
 
 	return (
 		<>
-			<section className='edit-contact-info p-3'>
-				<div className='container'>
-					<div className='row'>
-						<div className='col'>
-							<p className='h4 text-warning fw-bold'>Edit Contact</p>
-							<p className='fst-italic'>
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-								Officiis hic deleniti illo necessitatibus odit facere
-								accusantium et provident esse error, magnam sit, harum modi
-								saepe, quisquam repudiandae placeat autem impedit.
-							</p>
-						</div>
-					</div>
-				</div>
-			</section>
+			<Title textColor='text-warning'>Edit Contact</Title>
 			{isLoading ? (
 				<Preloader />
 			) : (
-				<section className='edit-contact mt-3'>
-					<div className='container'>
-						<div className='row align-items-center'>
-							<div className='col-md-4'>
-								<ContactForm
-									onSubmitForm={onSubmitForm}
-									groups={groups}
-									btnColor='btn-primary'
-								>
-									Edit
-								</ContactForm>
-							</div>
-							<div className='col-md-6'>
-								<img
-									src={userImg}
-									alt={`name of current contact`}
-									className='contact-img'
-								/>
-							</div>
+				<div className='container mt-3'>
+					<div className='row align-items-center'>
+						<div className='col-md-4'>
+							<ContactForm
+								contactData={contact}
+								onSubmitForm={onSubmitForm}
+								groups={groups}
+								btnColor='btn-warning'
+							>
+								Edit
+							</ContactForm>
+						</div>
+						<div className='col-md-6'>
+							<img
+								src={userImg}
+								alt={`name of current contact`}
+								className='contact-img'
+							/>
 						</div>
 					</div>
-				</section>
+				</div>
 			)}
 		</>
 	);

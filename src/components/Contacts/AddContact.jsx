@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ContactService } from '../../services/ContactService';
 import ContactForm from './ContactForm';
+import Title from './Title';
 
 const AddContact = () => {
 	const [state, setState] = useState({
@@ -39,36 +40,25 @@ const AddContact = () => {
 		}
 	};
 
-	const { groups } = state;
+	const { groups, contact } = state;
 
 	return (
 		<>
-			<section className='add-contact p-3'>
-				<div className='container'>
-					<div className='row'>
-						<div className='col'>
-							<p className='h4 text-success fw-bold'>Create Contact</p>
-							<p className='fst-italic'>
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-								Officiis hic deleniti illo necessitatibus odit facere
-								accusantium et provident esse error, magnam sit, harum modi
-								saepe, quisquam repudiandae placeat autem impedit.
-							</p>
-						</div>
-					</div>
-					<div className='row'>
-						<div className='col-md-4'>
-							<ContactForm
-								groups={groups}
-								onSubmitForm={onSubmitForm}
-								btnColor='btn-success'
-							>
-								Add
-							</ContactForm>
-						</div>
+			<Title textColor='text-success'>Create Contact</Title>
+			<div className='container mt-3'>
+				<div className='row'>
+					<div className='col-md-4'>
+						<ContactForm
+							contactData={contact}
+							groups={groups}
+							onSubmitForm={onSubmitForm}
+							btnColor='btn-success'
+						>
+							Add
+						</ContactForm>
 					</div>
 				</div>
-			</section>
+			</div>
 		</>
 	);
 };
