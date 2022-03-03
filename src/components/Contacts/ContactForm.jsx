@@ -3,16 +3,16 @@ import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 
 const ContactForm = (props) => {
-	const { onSubmitForm, groups, btnColor } = props;
+	const { onSubmitForm, groups, btnColor, contactData } = props;
 
 	const formik = useFormik({
 		initialValues: {
-			name: '',
-			mobile: '',
-			email: '',
-			company: '',
-			title: '',
-			groupId: '',
+			name: contactData.name,
+			mobile: contactData.mobile,
+			email: contactData.email,
+			company: contactData.company,
+			title: contactData.title,
+			groupId: contactData.groupId,
 		},
 		onSubmit: onSubmitForm,
 	});
