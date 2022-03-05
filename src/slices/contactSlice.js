@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ContactService } from '../services/ContactService';
 
-//action
+//actions
 export const getContacts = createAsyncThunk(
 	'contactsData/getContacts',
 	async (_, { rejectWithValue }) => {
@@ -14,29 +14,68 @@ export const getContacts = createAsyncThunk(
 	}
 );
 
-// export const deleteContact = createAsyncThunk(
-// 	'DELETE_CONTACT',
-// 	async (payload, { rejectWithValue }) => {
-// 		try {
-// 			const response = await ContactService.deleteContact(payload);
-// 			return response;
-// 		} catch (error) {
-// 			if (!error.response) {
-// 				throw error;
-// 			}
-// 			return rejectWithValue(error.response);
-// 		}
-// 	}
-// );
+export const getContact = createAsyncThunk(
+	'contactsData/getContact',
+	async (payload, { rejectWithValue }) => {
+		try {
+			const response = await ContactService.getContact(payload);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const updateContact = createAsyncThunk(
+	'contactsData/updateContact',
+	async (payload, { rejectWithValue }) => {
+		const { values, contactId } = payload;
+		try {
+			const response = await ContactService.updateContact(values, contactId);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const deleteContact = createAsyncThunk(
+	'contactsData/deleteContact',
+	async (payload, { rejectWithValue }) => {
+		try {
+			const response = await ContactService.deleteContact(payload);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const getGroups = createAsyncThunk(
+	'contactsData/getGroups',
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await ContactService.getAllGoups();
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
 
 //slice
 const contactsDataSlice = createSlice({
 	name: 'contactsData',
-	initialState: { isLoading: false, error: null, contacts: [] },
+	initialState: {
+		isLoading: false,
+		error: null,
+		currentContact: {},
+		contacts: [],
+		groups: [],
+	},
 	extraReducers: {
 		[getContacts.pending]: (state) => {
 			state.isLoading = true;
-			state.error = null;
 		},
 		[getContacts.fulfilled]: (state, action) => {
 			state.isLoading = false;
@@ -44,6 +83,34 @@ const contactsDataSlice = createSlice({
 		},
 		[getContacts.rejected]: (state, action) => {
 			state.isLoading = false;
+			state.error = action.payload;
+		},
+		[getContact.pending]: (state) => {
+			state.isLoading = true;
+		},
+		[getContact.fulfilled]: (state, action) => {
+			state.isLoading = false;
+			state.currentContact = action.payload;
+		},
+		[getContact.rejected]: (state, action) => {
+			state.isLoading = false;
+			state.error = action.payload;
+		},
+		[getGroups.pending]: (state) => {
+			state.isLoading = true;
+		},
+		[getGroups.fulfilled]: (state, action) => {
+			state.isLoading = false;
+			state.groups = action.payload;
+		},
+		[getGroups.rejected]: (state, action) => {
+			state.isLoading = false;
+			state.error = action.payload;
+		},
+		[updateContact.rejected]: (state, action) => {
+			state.error = action.payload;
+		},
+		[deleteContact.rejected]: (state, action) => {
 			state.error = action.payload;
 		},
 	},
