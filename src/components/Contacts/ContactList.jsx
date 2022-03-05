@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
 	faEye,
@@ -8,45 +9,26 @@ import {
 	faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ContactService } from '../../services/ContactService';
 import userImg from '../../assets/user.png';
 import Preloader from '../../common/Preloader';
 import Title from './Title';
 import SearchInput from './SearchInput';
+import { deleteContact, getContacts } from '../../slices/contactSlice';
 
 const ContactList = () => {
-	const [state, setState] = useState({
-		isLoading: false,
-		contacts: [],
-		error: '',
-	});
+	const dispatch = useDispatch();
+	const state = useSelector((state) => state.contactsData);
 
 	useEffect(() => {
-		const getAllContacts = async () => {
-			try {
-				setState({ ...state, isLoading: true });
-				let response = await ContactService.getAllContacts();
-				setState({ ...state, isLoading: false, contacts: response.data });
-			} catch (error) {
-				setState({ ...state, isLoading: false, error: error.message });
-			}
-		};
-		getAllContacts();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		dispatch(getContacts());
+	}, [dispatch]);
 
-	const handleOnDelete = async (contactId) => {
-		try {
-			let response = await ContactService.deleteContact(contactId);
-
+	const handleDelete = async (contactId) => {
+		dispatch(deleteContact(contactId)).then((response) => {
 			if (response) {
-				setState({ ...state, isLoading: true });
-				let response = await ContactService.getAllContacts();
-				setState({ ...state, isLoading: false, contacts: response.data });
+				dispatch(getContacts());
 			}
-		} catch (error) {
-			setState({ ...state, isLoading: false, error: error.message });
-		}
+		});
 	};
 
 	let { isLoading, contacts } = state;
@@ -116,7 +98,7 @@ const ContactList = () => {
 															<FontAwesomeIcon icon={faPen} />
 														</Link>
 														<button
-															onClick={() => handleOnDelete(contact.id)}
+															onClick={() => handleDelete(contact.id)}
 															className='btn btn-danger my-1'
 														>
 															<FontAwesomeIcon icon={faTrash} />
