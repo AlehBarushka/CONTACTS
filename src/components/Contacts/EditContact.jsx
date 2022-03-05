@@ -1,56 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ContactService } from '../../services/ContactService';
 import userImg from '../../assets/user.png';
 import Preloader from '../../common/Preloader';
 import ContactForm from './ContactForm';
 import Title from './Title';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	getContact,
+	getGroups,
+	updateContact,
+} from '../../slices/contactSlice';
 
 const EditContact = () => {
 	let { contactId } = useParams();
 	const navigate = useNavigate();
-
-	const [state, setState] = useState({
-		isLoading: false,
-		contact: {},
-		groups: [],
-		error: '',
-	});
+	const dispatch = useDispatch();
+	const state = useSelector((state) => state.contactsData);
 
 	useEffect(() => {
-		const getContact = async () => {
-			try {
-				setState({ ...state, isLoading: true });
-				let response = await ContactService.getContact(contactId);
-				let groupResponse = await ContactService.getAllGoups(response.data);
-				setState({
-					...state,
-					isLoading: false,
-					contact: response.data,
-					groups: groupResponse.data,
-				});
-			} catch (error) {
-				setState({ ...state, isLoading: false, error: error.message });
-			}
-		};
-		getContact();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contactId]);
+		dispatch(getContact(contactId));
+		dispatch(getGroups());
+	}, [dispatch, contactId]);
 
 	const onSubmitForm = async (values) => {
-		try {
-			let response = await ContactService.updateContact(values, contactId);
+		const payload = { values, contactId };
+		dispatch(updateContact(payload)).then((response) => {
 			if (response) {
 				navigate('/contacts/list', { replace: true });
 			}
-		} catch (error) {
-			setState({ ...state, isLoading: false, error: error.message });
-			navigate(`/contacts/edit/${contactId}`, { replace: false });
-		}
+		});
 	};
 
-	const { isLoading, groups, contact } = state;
+	const { isLoading, groups, currentContact } = state;
 
 	return (
 		<>
@@ -62,7 +44,7 @@ const EditContact = () => {
 					<div className='row align-items-center'>
 						<div className='col-md-4'>
 							<ContactForm
-								contactData={contact}
+								contactData={currentContact}
 								onSubmitForm={onSubmitForm}
 								groups={groups}
 								btnColor='btn-warning'
