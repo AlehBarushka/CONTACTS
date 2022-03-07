@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
-import userImg from '../../assets/user.png';
-import Preloader from '../../common/Preloader';
-import ContactForm from './ContactForm';
-import Title from './Title';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	getContact,
@@ -12,16 +7,22 @@ import {
 	updateContact,
 } from '../../slices/contactSlice';
 
+import userImg from '../../assets/user.png';
+import Preloader from '../../common/Preloader';
+import ContactForm from './ContactForm';
+import Title from './Title';
+
 const EditContact = () => {
 	let { contactId } = useParams();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state.contactsData);
 
-	//sending a requests to receive all contacts and current contact by ID
+	//sending a requests to receive current contact by ID and all groups
 	useEffect(() => {
-		dispatch(getContact(contactId));
-		dispatch(getGroups());
+		dispatch(getContact(contactId)).then(() => {
+			dispatch(getGroups());
+		});
 	}, [dispatch, contactId]);
 
 	//sending a updating contact request and then redirect if request status 'OK'
