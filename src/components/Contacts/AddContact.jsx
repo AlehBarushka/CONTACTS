@@ -12,7 +12,7 @@ const AddContact = () => {
 	const groups = useSelector((state) => state.contactsData.groups);
 
 	//use local state for ContactForm component
-	const [contactFields, setContactFields] = useState({
+	const [contactFields] = useState({
 		company: '',
 		email: '',
 		groupId: '',
