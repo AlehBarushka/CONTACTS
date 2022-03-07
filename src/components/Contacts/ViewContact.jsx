@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ContactService } from '../../services/ContactService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContact, getGroup } from '../../slices/contactSlice';
 
 import Preloader from '../../common/Preloader';
 import userImg from '../../assets/user.png';
@@ -8,35 +9,17 @@ import Title from './Title';
 
 const ViewContact = () => {
 	const { contactId } = useParams();
-
-	const [state, setState] = useState({
-		isLoading: false,
-		contact: {},
-		error: '',
-		group: {},
-	});
+	const dispatch = useDispatch();
+	const state = useSelector((state) => state.contactsData);
 
 	useEffect(() => {
-		const getContact = async () => {
-			try {
-				setState({ ...state, isLoading: true });
-				let response = await ContactService.getContact(contactId);
-				let groupResponse = await ContactService.getGroup(response.data);
-				setState({
-					...state,
-					isLoading: false,
-					contact: response.data,
-					group: groupResponse.data,
-				});
-			} catch (error) {
-				setState({ ...state, isLoading: false, error: error.message });
-			}
-		};
-		getContact(contactId);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contactId]);
+		dispatch(getContact(contactId)).then((response) => {
+			const currentContact = response.payload;
+			dispatch(getGroup(currentContact));
+		});
+	}, [dispatch, contactId]);
 
-	let { isLoading, contact, group } = state;
+	let { isLoading, currentContact, currentGroup } = state;
 
 	return (
 		<>
@@ -44,14 +27,14 @@ const ViewContact = () => {
 			{isLoading ? (
 				<Preloader />
 			) : (
-				Object.keys(contact).length > 0 &&
-				Object.keys(group).length > 0 && (
+				Object.keys(currentContact).length > 0 &&
+				Object.keys(currentGroup).length > 0 && (
 					<div className='container mt-3'>
 						<div className='row align-items-center'>
 							<div className='col-md-4 d-flex justify-content-center'>
 								<img
 									src={userImg}
-									alt={`${contact.name}'s avatar`}
+									alt={`${currentContact.name}'s avatar`}
 									className='contact-img'
 								/>
 							</div>
@@ -59,26 +42,31 @@ const ViewContact = () => {
 								<ul className='list-group'>
 									<li className='list-group-item list-group-item-action'>
 										Name:
-										<span className='ms-1 fw-bold'>{contact.name}</span>
+										<span className='ms-1 fw-bold'>{currentContact.name}</span>
 									</li>
 									<li className='list-group-item list-group-item-action'>
 										Mobile number:
-										<span className='ms-1 fw-bold'>{contact.mobile}</span>
+										<span className='ms-1 fw-bold'>
+											{currentContact.mobile}
+										</span>
 									</li>
 									<li className='list-group-item list-group-item-action'>
 										Email:
-										<span className='ms-1 fw-bold'>{contact.email}</span>
+										<span className='ms-1 fw-bold'>{currentContact.email}</span>
 									</li>
 									<li className='list-group-item list-group-item-action'>
 										Company:
-										<span className='ms-1 fw-bold'>{contact.company}</span>
+										<span className='ms-1 fw-bold'>
+											{currentContact.company}
+										</span>
 									</li>
 									<li className='list-group-item list-group-item-action'>
 										Title:
-										<span className='ms-1 fw-bold'>{contact.title}</span>
+										<span className='ms-1 fw-bold'>{currentContact.title}</span>
 									</li>
 									<li className='list-group-item list-group-item-action'>
-										Group: <span className='ms-1 fw-bold'>{group.name}</span>
+										Group:{' '}
+										<span className='ms-1 fw-bold'>{currentGroup.name}</span>
 									</li>
 								</ul>
 							</div>
