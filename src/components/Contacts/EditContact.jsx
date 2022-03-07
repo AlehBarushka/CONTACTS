@@ -18,16 +18,21 @@ const EditContact = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state.contactsData);
 
+	//sending a requests to receive all contacts and current contact by ID
 	useEffect(() => {
 		dispatch(getContact(contactId));
 		dispatch(getGroups());
 	}, [dispatch, contactId]);
 
+	//sending a updating contact request and then redirect if request status 'OK'
 	const onSubmitForm = async (values) => {
 		const payload = { values, contactId };
 		dispatch(updateContact(payload)).then((response) => {
-			if (response) {
+			if (!response?.error) {
 				navigate('/contacts/list', { replace: true });
+			} else {
+				alert(response.payload);
+				navigate(`/contacts/edit/${contactId}`, { replace: false });
 			}
 		});
 	};

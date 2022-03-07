@@ -19,14 +19,18 @@ const ContactList = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state.contactsData);
 
+	//sending a request to receive all contacts
 	useEffect(() => {
 		dispatch(getContacts());
 	}, [dispatch]);
 
+	//sending a deletion request, and then updating the component after sending a request to receive all contacts if status request 'OK'
 	const handleDelete = async (contactId) => {
 		dispatch(deleteContact(contactId)).then((response) => {
-			if (response) {
+			if (!response?.error) {
 				dispatch(getContacts());
+			} else {
+				alert(response.payload);
 			}
 		});
 	};
