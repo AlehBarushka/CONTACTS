@@ -1,46 +1,42 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ContactService } from '../../services/ContactService';
+import { createContact, getGroups } from '../../slices/contactSlice';
+
 import ContactForm from './ContactForm';
 import Title from './Title';
 
 const AddContact = () => {
-	const [state, setState] = useState({
-		isLoading: false,
-		contact: {},
-		groups: [],
-		error: '',
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const groups = useSelector((state) => state.contactsData.groups);
+
+	//use local state for ContactForm component
+	const [contactFields, setContactFields] = useState({
+		company: '',
+		email: '',
+		groupId: '',
+		mobile: '',
+		name: '',
+		title: '',
 	});
 
-	const navigate = useNavigate();
-
+	//sending a request to receive all groups
 	useEffect(() => {
-		const getAllGoups = async () => {
-			try {
-				setState({ ...state, isLoading: true });
-				let response = await ContactService.getAllGoups();
-				setState({ ...state, isLoading: false, groups: response.data });
-			} catch (error) {
-				setState({ ...state, isLoading: false, error: error.message });
-			}
-		};
-		getAllGoups();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		dispatch(getGroups());
+	}, [dispatch]);
 
+	//sending a create contact request and then redirect if request status 'OK'
 	const onSubmitForm = async (values) => {
-		try {
-			let response = await ContactService.createContact(values);
-			if (response) {
+		dispatch(createContact(values)).then((response) => {
+			if (!response?.error) {
 				navigate('/contacts/list', { replace: true });
+			} else {
+				alert(response.payload);
+				navigate('/contacts/add', { replace: false });
 			}
-		} catch (error) {
-			setState({ ...state, isLoading: false, error: error.message });
-			navigate('/contacts/add', { replace: false });
-		}
+		});
 	};
-
-	const { groups, contact } = state;
 
 	return (
 		<>
@@ -49,7 +45,7 @@ const AddContact = () => {
 				<div className='row'>
 					<div className='col-md-4'>
 						<ContactForm
-							contactData={contact}
+							contactData={contactFields}
 							groups={groups}
 							onSubmitForm={onSubmitForm}
 							btnColor='btn-success'
