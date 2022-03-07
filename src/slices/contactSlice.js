@@ -26,6 +26,18 @@ export const getContact = createAsyncThunk(
 	}
 );
 
+export const createContact = createAsyncThunk(
+	'contactsData/createContact',
+	async (payload, { rejectWithValue }) => {
+		try {
+			const response = await ContactService.createContact(payload);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
 export const updateContact = createAsyncThunk(
 	'contactsData/updateContact',
 	async (payload, { rejectWithValue }) => {
@@ -105,6 +117,9 @@ const contactsDataSlice = createSlice({
 		},
 		[getGroups.rejected]: (state, action) => {
 			state.isLoading = false;
+			state.error = action.payload;
+		},
+		[createContact.rejected]: (state, action) => {
 			state.error = action.payload;
 		},
 		[updateContact.rejected]: (state, action) => {
