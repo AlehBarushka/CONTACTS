@@ -75,6 +75,18 @@ export const getGroups = createAsyncThunk(
 	}
 );
 
+export const getGroup = createAsyncThunk(
+	'contactsData/getGroup',
+	async (payload, { rejectWithValue }) => {
+		try {
+			const response = await ContactService.getGroup(payload);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
 //slice
 const contactsDataSlice = createSlice({
 	name: 'contactsData',
@@ -82,6 +94,7 @@ const contactsDataSlice = createSlice({
 		isLoading: false,
 		error: null,
 		currentContact: {},
+		currentGroup: {},
 		contacts: [],
 		groups: [],
 	},
@@ -116,6 +129,17 @@ const contactsDataSlice = createSlice({
 			state.groups = action.payload;
 		},
 		[getGroups.rejected]: (state, action) => {
+			state.isLoading = false;
+			state.error = action.payload;
+		},
+		[getGroup.pending]: (state) => {
+			state.isLoading = true;
+		},
+		[getGroup.fulfilled]: (state, action) => {
+			state.isLoading = false;
+			state.currentGroup = action.payload;
+		},
+		[getGroup.rejected]: (state, action) => {
 			state.isLoading = false;
 			state.error = action.payload;
 		},
