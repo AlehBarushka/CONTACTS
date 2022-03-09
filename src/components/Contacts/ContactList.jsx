@@ -55,18 +55,18 @@ const ContactList = () => {
 						{contacts.length > 0 &&
 							contacts.map((contact) => {
 								return (
-									<div className='col-md-6' key={contact.id}>
+									<div className='col-lg-6' key={contact.id}>
 										<div className='card my-2'>
 											<div className='card-body'>
 												<div className='row align-items-center d-flex justify-content-around'>
-													<div className='col-md-4'>
+													<div className='col-sm-4'>
 														<img
 															className='contact-img'
 															src={userImg}
 															alt={`${contact.name}'s avatar`}
 														/>
 													</div>
-													<div className='col-md-7'>
+													<div className='col-sm-7'>
 														<ul className='list-group'>
 															<li className='list-group-item list-group-item-action'>
 																Name:
@@ -88,7 +88,7 @@ const ContactList = () => {
 															</li>
 														</ul>
 													</div>
-													<div className='col-md-1 d-flex flex-column align-items-center'>
+													<div className='col-sm-1 d-flex flex-column align-items-center'>
 														<Link
 															to={`/contacts/veiw/${contact.id}`}
 															className='btn btn-primary my-1'

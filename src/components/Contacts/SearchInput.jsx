@@ -3,7 +3,7 @@ import React from 'react';
 const SearchInput = () => {
 	return (
 		<div className='container mt-3'>
-			<div className='col-md-6'>
+			<div className='col-lg-6'>
 				<form className='row'>
 					<div className='col'>
 						<div className='mb-2'>
