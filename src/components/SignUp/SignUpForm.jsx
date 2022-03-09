@@ -1,11 +1,24 @@
 import React from 'react';
+import { useFormik } from 'formik';
 
 const SignUpForm = () => {
+	const formik = useFormik({
+		initialValues: {
+			userName: '',
+			email: '',
+			password: '',
+		},
+		onSubmit: (values) => {
+			console.log(values);
+		},
+	});
 	return (
-		<form>
+		<form onSubmit={formik.handleSubmit}>
 			<div className='mb-2'>
 				<input
-					name='username'
+					name='userName'
+					value={formik.values.userName}
+					onChange={formik.handleChange}
 					type='text'
 					className='form-control'
 					placeholder='Username'
@@ -14,6 +27,8 @@ const SignUpForm = () => {
 			<div className='mb-2'>
 				<input
 					name='email'
+					value={formik.values.email}
+					onChange={formik.handleChange}
 					type='email'
 					className='form-control'
 					placeholder='Email'
@@ -22,6 +37,8 @@ const SignUpForm = () => {
 			<div className='mb-2'>
 				<input
 					name='password'
+					value={formik.values.password}
+					onChange={formik.handleChange}
 					type='password'
 					className='form-control'
 					placeholder='Password'
