@@ -8,6 +8,8 @@ import ViewContact from './components/Contacts/ViewContact';
 import EditContact from './components/Contacts/EditContact';
 
 import './App.css';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 
 const App = () => {
 	return (
@@ -15,6 +17,8 @@ const App = () => {
 			<Navbar />
 			<Routes>
 				<Route path='/' element={<Navigate to={'/contacts/list'} />} />
+				<Route path='/login' element={<Login />} />
+				<Route path='/signup' element={<SignUp />} />
 				<Route path='/contacts/list' element={<ContactList />} />
 				<Route path='/contacts/add' element={<AddContact />} />
 				<Route path='/contacts/veiw/:contactId' element={<ViewContact />} />
