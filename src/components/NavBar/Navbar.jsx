@@ -19,6 +19,9 @@ const Navbar = () => {
 						</Link>
 					</div>
 					<div className='col d-flex justify-content-end'>
+						<button className='btn btn-sm btn-outline-light me-1'>
+							Logout
+						</button>
 						<Link to={'/login'} className='btn btn-sm btn-outline-light me-1'>
 							Login
 						</Link>
