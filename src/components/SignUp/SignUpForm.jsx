@@ -1,15 +1,15 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const SignUpForm = () => {
+const SignUpForm = ({ registerNewUser }) => {
 	const formik = useFormik({
 		initialValues: {
 			userName: '',
 			email: '',
 			password: '',
 		},
-		onSubmit: (values) => {
-			console.log(values);
+		onSubmit: (userData) => {
+			registerNewUser(userData);
 		},
 	});
 	return (
