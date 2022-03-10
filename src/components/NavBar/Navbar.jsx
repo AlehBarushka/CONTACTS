@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMobilePhone } from '@fortawesome/free-solid-svg-icons';
+import { logOut } from '../../slices/authSlice';
 
 const Navbar = () => {
+	const dispatch = useDispatch();
 	const isAuth = useSelector((state) => state.authData.isAuth);
+
+	const handleLogOut = () => {
+		dispatch(logOut());
+	};
 
 	return (
 		<>
@@ -38,7 +44,10 @@ const Navbar = () => {
 								</Link>
 							</>
 						) : (
-							<button className='btn btn-sm btn-outline-light me-1'>
+							<button
+								onClick={handleLogOut}
+								className='btn btn-sm btn-outline-light me-1'
+							>
 								Logout
 							</button>
 						)}
