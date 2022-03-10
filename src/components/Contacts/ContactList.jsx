@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact, getContacts } from '../../slices/contactSlice';
 
 import {
 	faEye,
@@ -13,16 +14,18 @@ import userImg from '../../assets/user.png';
 import Preloader from '../../common/Preloader';
 import Title from './Title';
 import SearchInput from './SearchInput';
-import { deleteContact, getContacts } from '../../slices/contactSlice';
 
 const ContactList = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state.contactsData);
+	const isAuth = useSelector((state) => state.authData.isAuth);
 
 	//sending a request to receive all contacts
 	useEffect(() => {
-		dispatch(getContacts());
-	}, [dispatch]);
+		if (isAuth) {
+			dispatch(getContacts());
+		}
+	}, [dispatch, isAuth]);
 
 	//sending a deletion request, and then updating the component after sending a request to receive all contacts if status request 'OK'
 	const handleDelete = async (contactId) => {
@@ -37,7 +40,9 @@ const ContactList = () => {
 
 	let { isLoading, contacts } = state;
 
-	return (
+	return !isAuth ? (
+		<Navigate to='/login' />
+	) : (
 		<>
 			<Title textColor='text-dark'>
 				Contact Manager
