@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './services/firebase';
+import { setCurrentUser } from './slices/authSlice';
 
 import Navbar from './components/NavBar/Navbar';
 import ContactList from './components/Contacts/ContactList';
@@ -12,6 +16,21 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 
 const App = () => {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				const currentUser = {
+					uId: user.uid,
+					userName: user.displayName,
+					email: user.email,
+				};
+				dispatch(setCurrentUser(currentUser));
+			}
+		});
+	}, [dispatch]);
+
 	return (
 		<>
 			<Navbar />
