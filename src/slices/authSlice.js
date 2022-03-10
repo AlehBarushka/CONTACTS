@@ -42,6 +42,17 @@ export const logIn = createAsyncThunk(
 	}
 );
 
+export const logOut = createAsyncThunk(
+	'authData/logOut',
+	async (_, { rejectWithValue }) => {
+		try {
+			await firebaseAuth.logOut();
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
 //slice
 const authSlice = createSlice({
 	name: 'authData',
@@ -50,6 +61,13 @@ const authSlice = createSlice({
 		isAuth: false,
 		error: null,
 		currentUser: null,
+	},
+	reducers: {
+		setCurrentUser(state, { payload }) {
+			state.isAuth = true;
+			state.error = null;
+			state.currentUser = payload;
+		},
 	},
 	extraReducers: {
 		[signUp.pending]: (state) => {
@@ -82,7 +100,16 @@ const authSlice = createSlice({
 			state.currentUser = null;
 			state.error = payload;
 		},
+		[logOut.fulfilled]: (state) => {
+			state.isAuth = false;
+			state.error = null;
+			state.currentUser = null;
+		},
+		[logOut.rejected]: (state, { payload }) => {
+			state.error = payload;
+		},
 	},
 });
 
+export const { setCurrentUser, setCurrentUserFail } = authSlice.actions;
 export default authSlice.reducer;
