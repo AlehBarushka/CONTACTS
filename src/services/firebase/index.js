@@ -4,6 +4,7 @@ import {
 	createUserWithEmailAndPassword,
 	updateProfile,
 	signInWithEmailAndPassword,
+	signOut,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -15,7 +16,7 @@ const firebaseConfig = {
 	appId: '1:358469295730:web:167f87ffc89e2cc7f6aceb',
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 export const firebaseAuth = {
@@ -27,5 +28,8 @@ export const firebaseAuth = {
 	},
 	logIn(email, password) {
 		return signInWithEmailAndPassword(auth, email, password);
+	},
+	logOut() {
+		return signOut(auth);
 	},
 };
