@@ -1,5 +1,15 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+import { Button, Form } from 'react-bootstrap';
+
+const loginFormSchema = Yup.object().shape({
+	email: Yup.string().email('Invalid email').required('Required'),
+	password: Yup.string()
+		.min(6, 'Password should be at least 6 characters')
+		.required('Required'),
+});
 
 const LoginForm = ({ logInUser, isLoading }) => {
 	const formik = useFormik({
@@ -10,33 +20,46 @@ const LoginForm = ({ logInUser, isLoading }) => {
 		onSubmit: (userData) => {
 			logInUser(userData);
 		},
+		validationSchema: loginFormSchema,
 	});
+
 	return (
-		<form onSubmit={formik.handleSubmit}>
-			<div className='mb-2'>
-				<input
+		<Form noValidate onSubmit={formik.handleSubmit}>
+			<Form.Group className='mb-2'>
+				<Form.Control
 					name='email'
+					type='email'
+					placeholder='Email'
 					value={formik.values.email}
 					onChange={formik.handleChange}
-					type='email'
-					className='form-control'
-					placeholder='Email'
+					isInvalid={formik.errors?.email && formik.touched?.email}
 				/>
-			</div>
-			<div className='mb-2'>
-				<input
+				<Form.Control.Feedback type='invalid'>
+					{formik.errors.email}
+				</Form.Control.Feedback>
+			</Form.Group>
+			<Form.Group className='mb-2'>
+				<Form.Control
 					name='password'
 					value={formik.values.password}
 					onChange={formik.handleChange}
 					type='password'
-					className='form-control'
 					placeholder='Password'
+					isInvalid={formik.errors?.password && formik.touched?.password}
 				/>
-			</div>
-			<button disabled={isLoading} type='submit' className='btn btn-dark'>
+				<Form.Control.Feedback type='invalid'>
+					{formik.errors.password}
+				</Form.Control.Feedback>
+			</Form.Group>
+			<Button
+				disabled={isLoading}
+				variant='dark'
+				type='submit'
+				className='me-2'
+			>
 				Login
-			</button>
-		</form>
+			</Button>
+		</Form>
 	);
 };
 
