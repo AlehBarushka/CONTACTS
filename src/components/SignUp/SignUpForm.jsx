@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const SignUpForm = ({ registerNewUser }) => {
+const SignUpForm = ({ registerNewUser, isLoading }) => {
 	const formik = useFormik({
 		initialValues: {
 			userName: '',
@@ -44,7 +44,7 @@ const SignUpForm = ({ registerNewUser }) => {
 					placeholder='Password'
 				/>
 			</div>
-			<button type='submit' className='btn btn-dark'>
+			<button disabled={isLoading} type='submit' className='btn btn-dark'>
 				SignUp
 			</button>
 		</form>

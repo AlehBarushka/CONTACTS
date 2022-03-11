@@ -8,11 +8,13 @@ import Title from '../Contacts/Title';
 
 const Login = () => {
 	const dispatch = useDispatch();
-	const isAuth = useSelector((state) => state.authData.isAuth);
+	const authData = useSelector((state) => state.authData);
 
 	const logInUser = (userData) => {
 		dispatch(logIn(userData));
 	};
+
+	const { isAuth, isLoading } = authData;
 	return isAuth ? (
 		<Navigate to='/' />
 	) : (
@@ -20,7 +22,7 @@ const Login = () => {
 			<Title textColor='text-dark'>Login</Title>
 			<div className='container mt-3'>
 				<div className='col-lg-4 col-md-6'>
-					<LoginForm logInUser={logInUser} />
+					<LoginForm logInUser={logInUser} isLoading={isLoading} />
 				</div>
 			</div>
 		</>

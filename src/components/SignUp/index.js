@@ -8,12 +8,13 @@ import SignUpForm from './SignUpForm';
 
 const SignUp = () => {
 	const dispatch = useDispatch();
-	const isAuth = useSelector((state) => state.authData.isAuth);
+	const authData = useSelector((state) => state.authData);
 
 	const registerNewUser = (userData) => {
 		dispatch(signUp(userData));
 	};
 
+	const { isAuth, isLoading } = authData;
 	return isAuth ? (
 		<Navigate to='/' />
 	) : (
@@ -21,7 +22,7 @@ const SignUp = () => {
 			<Title textColor='text-dark'>SignUp</Title>
 			<div className='container mt-3'>
 				<div className='col-lg-4 col-md-6'>
-					<SignUpForm registerNewUser={registerNewUser} />
+					<SignUpForm registerNewUser={registerNewUser} isLoading={isLoading} />
 				</div>
 			</div>
 		</>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const LoginForm = ({ logInUser }) => {
+const LoginForm = ({ logInUser, isLoading }) => {
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -33,7 +33,7 @@ const LoginForm = ({ logInUser }) => {
 					placeholder='Password'
 				/>
 			</div>
-			<button type='submit' className='btn btn-dark'>
+			<button disabled={isLoading} type='submit' className='btn btn-dark'>
 				Login
 			</button>
 		</form>
