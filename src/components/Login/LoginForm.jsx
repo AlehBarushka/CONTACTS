@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import { Button, Form } from 'react-bootstrap';
 
-const loginFormSchema = Yup.object().shape({
+const logInFormSchema = Yup.object().shape({
 	email: Yup.string().email('Invalid email').required('Required'),
 	password: Yup.string()
 		.min(6, 'Password should be at least 6 characters')
@@ -20,7 +20,7 @@ const LoginForm = ({ logInUser, isLoading }) => {
 		onSubmit: (userData) => {
 			logInUser(userData);
 		},
-		validationSchema: loginFormSchema,
+		validationSchema: logInFormSchema,
 	});
 
 	return (
