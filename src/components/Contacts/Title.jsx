@@ -1,11 +1,15 @@
 import React from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 
-const Title = (props) => {
-	const { textColor } = props;
+const Title = ({ textColor, position, children }) => {
 	return (
-		<div className='container mt-3'>
-			<p className={`h3 ${textColor} fw-bold`}>{props.children}</p>
-		</div>
+		<Container className='mt-3'>
+			<Row className={`${position}`}>
+				<Col md={6} lg={4}>
+					<p className={`h3 ${textColor} fw-bold`}>{children}</p>
+				</Col>
+			</Row>
+		</Container>
 	);
 };
 
