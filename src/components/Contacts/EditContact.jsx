@@ -53,7 +53,7 @@ const EditContact = () => {
 								contactData={currentContact}
 								onSubmitForm={onSubmitForm}
 								groups={groups}
-								btnColor='btn-warning'
+								btnColor='warning'
 							>
 								Edit
 							</ContactForm>

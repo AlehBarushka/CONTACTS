@@ -48,7 +48,7 @@ const AddContact = () => {
 							contactData={contactFields}
 							groups={groups}
 							onSubmitForm={onSubmitForm}
-							btnColor='btn-success'
+							btnColor='success'
 						>
 							Add
 						</ContactForm>
