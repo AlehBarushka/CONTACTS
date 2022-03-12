@@ -5,6 +5,7 @@ import { signUp } from '../../slices/authSlice';
 
 import Title from '../Contacts/Title';
 import SignUpForm from './SignUpForm';
+import { Col, Container, Row } from 'react-bootstrap';
 
 const SignUp = () => {
 	const dispatch = useDispatch();
@@ -19,12 +20,19 @@ const SignUp = () => {
 		<Navigate to='/' />
 	) : (
 		<>
-			<Title textColor='text-dark'>SignUp</Title>
-			<div className='container mt-3'>
-				<div className='col-lg-4 col-md-6'>
-					<SignUpForm registerNewUser={registerNewUser} isLoading={isLoading} />
-				</div>
-			</div>
+			<Title textColor='text-dark' position='justify-content-center'>
+				SignUp
+			</Title>
+			<Container className='mt-3'>
+				<Row className='justify-content-center'>
+					<Col md={6} lg={4}>
+						<SignUpForm
+							registerNewUser={registerNewUser}
+							isLoading={isLoading}
+						/>
+					</Col>
+				</Row>
+			</Container>
 		</>
 	);
 };
