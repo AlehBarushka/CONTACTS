@@ -1,7 +1,18 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+import { Button, Form } from 'react-bootstrap';
 
 const SignUpForm = ({ registerNewUser, isLoading }) => {
+	const signUpFormFormSchema = Yup.object().shape({
+		userName: Yup.string().required('Required'),
+		email: Yup.string().email('Invalid email').required('Required'),
+		password: Yup.string()
+			.min(6, 'Password should be at least 6 characters')
+			.required('Required'),
+	});
+
 	const formik = useFormik({
 		initialValues: {
 			userName: '',
@@ -11,43 +22,59 @@ const SignUpForm = ({ registerNewUser, isLoading }) => {
 		onSubmit: (userData) => {
 			registerNewUser(userData);
 		},
+		validationSchema: signUpFormFormSchema,
 	});
+
 	return (
-		<form onSubmit={formik.handleSubmit}>
-			<div className='mb-2'>
-				<input
+		<Form noValidate onSubmit={formik.handleSubmit}>
+			<Form.Group className='mb-2'>
+				<Form.Control
 					name='userName'
 					value={formik.values.userName}
 					onChange={formik.handleChange}
 					type='text'
-					className='form-control'
 					placeholder='Username'
+					isInvalid={formik.errors?.userName && formik.touched?.userName}
 				/>
-			</div>
-			<div className='mb-2'>
-				<input
+				<Form.Control.Feedback type='invalid'>
+					{formik.errors.userName}
+				</Form.Control.Feedback>
+			</Form.Group>
+			<Form.Group className='mb-2'>
+				<Form.Control
 					name='email'
 					value={formik.values.email}
 					onChange={formik.handleChange}
 					type='email'
-					className='form-control'
 					placeholder='Email'
+					isInvalid={formik.errors?.email && formik.touched?.email}
 				/>
-			</div>
-			<div className='mb-2'>
-				<input
+				<Form.Control.Feedback type='invalid'>
+					{formik.errors.email}
+				</Form.Control.Feedback>
+			</Form.Group>
+			<Form.Group className='mb-2'>
+				<Form.Control
 					name='password'
 					value={formik.values.password}
 					onChange={formik.handleChange}
 					type='password'
-					className='form-control'
 					placeholder='Password'
+					isInvalid={formik.errors?.password && formik.touched?.password}
 				/>
-			</div>
-			<button disabled={isLoading} type='submit' className='btn btn-dark'>
+				<Form.Control.Feedback type='invalid'>
+					{formik.errors.password}
+				</Form.Control.Feedback>
+			</Form.Group>
+			<Button
+				disabled={isLoading}
+				variant='dark'
+				type='submit'
+				className='me-2'
+			>
 				SignUp
-			</button>
-		</form>
+			</Button>
+		</Form>
 	);
 };
 
