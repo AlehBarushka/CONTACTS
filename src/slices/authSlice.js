@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { firebaseAuth } from '../services/firebase';
+import { firebaseAuth } from '../services/firebase/auth';
 
 //actions
 export const signUp = createAsyncThunk(
@@ -7,16 +7,12 @@ export const signUp = createAsyncThunk(
 	async (payload, { rejectWithValue }) => {
 		const { email, password, userName } = payload;
 		try {
-			const resData = await firebaseAuth.registerNewUser(email, password);
-			// add username
-			await firebaseAuth.updateUserName(userName);
-			const user = {
-				uId: resData.user.uid,
-				userName: resData.user.displayName,
-				email: resData.user.email,
-			};
-			//return serializable values
-			return user;
+			const resData = await firebaseAuth.registerNewUser(
+				email,
+				password,
+				userName
+			);
+			return resData;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -29,13 +25,7 @@ export const logIn = createAsyncThunk(
 		const { email, password } = payload;
 		try {
 			const resData = await firebaseAuth.logIn(email, password);
-			const user = {
-				uId: resData.user.uid,
-				userName: resData.user.displayName,
-				email: resData.user.email,
-			};
-			//return serializable values
-			return user;
+			return resData;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
