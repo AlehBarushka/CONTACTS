@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './services/firebase';
+import { auth } from './services/firebase/auth';
 import { setCurrentUser } from './slices/authSlice';
 
 import Navbar from './components/NavBar/Navbar';
@@ -22,7 +22,7 @@ const App = () => {
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				const currentUser = {
-					uId: user.uid,
+					id: user.uid,
 					userName: user.displayName,
 					email: user.email,
 				};
