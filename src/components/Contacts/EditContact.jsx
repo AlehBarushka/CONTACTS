@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+	addCurrentGroup,
+	deleteCurrentContact,
 	getContact,
-	getGroups,
 	updateContact,
 } from '../../slices/contactSlice';
 
@@ -18,27 +19,24 @@ const EditContact = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state.contactsData);
 
-	//sending a requests to receive current contact by ID and all groups
+	//sending a request to receive current contact by id
 	useEffect(() => {
-		dispatch(getContact(contactId)).then(() => {
-			dispatch(getGroups());
-		});
+		dispatch(getContact(contactId));
+		//after unmounting
+		return () => {
+			dispatch(deleteCurrentContact());
+		};
 	}, [dispatch, contactId]);
 
-	//sending a updating contact request and then redirect if request status 'OK'
 	const onSubmitForm = async (values) => {
-		const payload = { values, contactId };
-		dispatch(updateContact(payload)).then((response) => {
-			if (!response?.error) {
+		dispatch(updateContact({ values, contactId })).then(({ meta }) => {
+			if (meta.requestStatus === 'fulfilled') {
 				navigate('/contacts/list', { replace: true });
-			} else {
-				alert(response.payload);
-				navigate(`/contacts/edit/${contactId}`, { replace: false });
 			}
 		});
 	};
 
-	const { isLoading, groups, currentContact } = state;
+	const { isLoading, groups, currentContact, currentGroup } = state;
 
 	return (
 		<>
@@ -53,6 +51,7 @@ const EditContact = () => {
 								contactData={currentContact}
 								onSubmitForm={onSubmitForm}
 								groups={groups}
+								currentGroup={currentGroup}
 								btnColor='warning'
 							>
 								Edit
