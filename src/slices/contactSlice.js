@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { firebaseDB } from '../services/firebase/db';
+import { firebaseDB } from '../firebase/db';
 
 //actions
 export const getContacts = createAsyncThunk(

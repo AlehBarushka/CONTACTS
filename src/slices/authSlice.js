@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { firebaseAuth } from '../services/firebase/auth';
+import { firebaseAuth } from '../firebase/auth';
 
 //actions
 export const signUp = createAsyncThunk(
@@ -63,11 +63,10 @@ const authSlice = createSlice({
 		[signUp.pending]: (state) => {
 			state.isLoading = true;
 		},
-		[signUp.fulfilled]: (state, { payload }) => {
+		[signUp.fulfilled]: (state) => {
 			state.isLoading = false;
 			state.isAuth = true;
 			state.error = null;
-			state.currentUser = payload;
 		},
 		[signUp.rejected]: (state, { payload }) => {
 			state.isLoading = false;
@@ -78,11 +77,10 @@ const authSlice = createSlice({
 		[logIn.pending]: (state) => {
 			state.isLoading = true;
 		},
-		[logIn.fulfilled]: (state, { payload }) => {
+		[logIn.fulfilled]: (state) => {
 			state.isLoading = false;
 			state.isAuth = true;
 			state.error = null;
-			state.currentUser = payload;
 		},
 		[logIn.rejected]: (state, { payload }) => {
 			state.isLoading = false;

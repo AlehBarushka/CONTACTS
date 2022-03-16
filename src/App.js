@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './services/firebase/auth';
+import { auth } from './firebase/auth';
 import { setCurrentUser } from './slices/authSlice';
 
 import Navbar from './components/NavBar/Navbar';
