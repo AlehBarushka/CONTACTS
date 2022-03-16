@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact, getContacts } from '../../slices/contactSlice';
+import {
+	deleteContact,
+	getContacts,
+	getGroups,
+} from '../../slices/contactSlice';
 
 import {
 	faEye,
@@ -20,20 +24,18 @@ const ContactList = () => {
 	const state = useSelector((state) => state.contactsData);
 	const isAuth = useSelector((state) => state.authData.isAuth);
 
-	//sending a request to receive all contacts
+	//sending a request to receive all contacts and groups
 	useEffect(() => {
 		if (isAuth) {
 			dispatch(getContacts());
+			dispatch(getGroups());
 		}
 	}, [dispatch, isAuth]);
 
-	//sending a deletion request, and then updating the component after sending a request to receive all contacts if status request 'OK'
 	const handleDelete = async (contactId) => {
-		dispatch(deleteContact(contactId)).then((response) => {
-			if (!response?.error) {
+		dispatch(deleteContact(contactId)).then(({ meta }) => {
+			if (meta.requestStatus === 'fulfilled') {
 				dispatch(getContacts());
-			} else {
-				alert(response.payload);
 			}
 		});
 	};
