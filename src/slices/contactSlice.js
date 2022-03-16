@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ContactService } from '../services/ContactService';
+import { firebaseDB } from '../services/firebase/db';
 
 //actions
 export const getContacts = createAsyncThunk(
 	'contactsData/getContacts',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await ContactService.getAllContacts();
-			return response.data;
+			const resData = await firebaseDB.getContacts();
+			return resData;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -18,8 +18,8 @@ export const getContact = createAsyncThunk(
 	'contactsData/getContact',
 	async (payload, { rejectWithValue }) => {
 		try {
-			const response = await ContactService.getContact(payload);
-			return response.data;
+			const resData = await firebaseDB.getContact(payload);
+			return resData;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -30,8 +30,7 @@ export const createContact = createAsyncThunk(
 	'contactsData/createContact',
 	async (payload, { rejectWithValue }) => {
 		try {
-			const response = await ContactService.createContact(payload);
-			return response.data;
+			await firebaseDB.addContact(payload);
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -43,8 +42,7 @@ export const updateContact = createAsyncThunk(
 	async (payload, { rejectWithValue }) => {
 		const { values, contactId } = payload;
 		try {
-			const response = await ContactService.updateContact(values, contactId);
-			return response.data;
+			await firebaseDB.updateContact(contactId, values);
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -55,8 +53,7 @@ export const deleteContact = createAsyncThunk(
 	'contactsData/deleteContact',
 	async (payload, { rejectWithValue }) => {
 		try {
-			const response = await ContactService.deleteContact(payload);
-			return response.data;
+			await firebaseDB.deleteContact(payload);
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -67,20 +64,8 @@ export const getGroups = createAsyncThunk(
 	'contactsData/getGroups',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await ContactService.getAllGoups();
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(error.message);
-		}
-	}
-);
-
-export const getGroup = createAsyncThunk(
-	'contactsData/getGroup',
-	async (payload, { rejectWithValue }) => {
-		try {
-			const response = await ContactService.getGroup(payload);
-			return response.data;
+			const resData = await firebaseDB.getGroups();
+			return resData;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
@@ -97,6 +82,21 @@ const contactsDataSlice = createSlice({
 		currentGroup: {},
 		contacts: [],
 		groups: [],
+	},
+	reducers: {
+		deleteCurrentContact(state) {
+			state.currentContact = {};
+		},
+		addCurrentGroup(state, { payload }) {
+			state.groups.forEach((group) => {
+				if (group.id === payload) {
+					state.currentGroup = group;
+				}
+			});
+		},
+		deleteCurrentGroup(state) {
+			state.currentGroup = {};
+		},
 	},
 	extraReducers: {
 		[getContacts.pending]: (state) => {
@@ -132,17 +132,6 @@ const contactsDataSlice = createSlice({
 			state.isLoading = false;
 			state.error = action.payload;
 		},
-		[getGroup.pending]: (state) => {
-			state.isLoading = true;
-		},
-		[getGroup.fulfilled]: (state, action) => {
-			state.isLoading = false;
-			state.currentGroup = action.payload;
-		},
-		[getGroup.rejected]: (state, action) => {
-			state.isLoading = false;
-			state.error = action.payload;
-		},
 		[createContact.rejected]: (state, action) => {
 			state.error = action.payload;
 		},
@@ -155,4 +144,6 @@ const contactsDataSlice = createSlice({
 	},
 });
 
+export const { deleteCurrentContact, addCurrentGroup, deleteCurrentGroup } =
+	contactsDataSlice.actions;
 export default contactsDataSlice.reducer;
