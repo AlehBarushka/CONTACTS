@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createContact, getGroups } from '../../slices/contactSlice';
+import { createContact } from '../../slices/contactSlice';
 
 import ContactForm from './ContactForm';
 import Title from './Title';
@@ -21,19 +21,10 @@ const AddContact = () => {
 		title: '',
 	});
 
-	//sending a request to receive all groups
-	useEffect(() => {
-		dispatch(getGroups());
-	}, [dispatch]);
-
-	//sending a create contact request and then redirect if request status 'OK'
 	const onSubmitForm = async (values) => {
-		dispatch(createContact(values)).then((response) => {
-			if (!response?.error) {
+		dispatch(createContact(values)).then(({ meta }) => {
+			if (meta.requestStatus === 'fulfilled') {
 				navigate('/contacts/list', { replace: true });
-			} else {
-				alert(response.payload);
-				navigate('/contacts/add', { replace: false });
 			}
 		});
 	};
