@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContact, getGroup } from '../../slices/contactSlice';
+import {
+	addCurrentGroup,
+	deleteCurrentContact,
+	deleteCurrentGroup,
+	getContact,
+} from '../../slices/contactSlice';
 
 import Preloader from '../../common/Preloader';
 import userImg from '../../assets/user.png';
@@ -12,11 +17,18 @@ const ViewContact = () => {
 	const dispatch = useDispatch();
 	const state = useSelector((state) => state.contactsData);
 
+	//sending a request to receive current contact by id
 	useEffect(() => {
-		dispatch(getContact(contactId)).then((response) => {
-			const currentContact = response.payload;
-			dispatch(getGroup(currentContact));
+		dispatch(getContact(contactId)).then(({ payload }) => {
+			const { groupId } = payload;
+			//add current group of contact
+			dispatch(addCurrentGroup(groupId));
 		});
+		//after unmounting
+		return () => {
+			dispatch(deleteCurrentGroup());
+			dispatch(deleteCurrentContact());
+		};
 	}, [dispatch, contactId]);
 
 	let { isLoading, currentContact, currentGroup } = state;
@@ -27,8 +39,7 @@ const ViewContact = () => {
 			{isLoading ? (
 				<Preloader />
 			) : (
-				Object.keys(currentContact).length > 0 &&
-				Object.keys(currentGroup).length > 0 && (
+				Object.keys(currentContact).length > 0 && (
 					<div className='container mt-3'>
 						<div className='row align-items-center'>
 							<div className='col-md-4 d-flex justify-content-center'>
@@ -65,7 +76,7 @@ const ViewContact = () => {
 										<span className='ms-1 fw-bold'>{currentContact.title}</span>
 									</li>
 									<li className='list-group-item list-group-item-action'>
-										Group:{' '}
+										Group:
 										<span className='ms-1 fw-bold'>{currentGroup.name}</span>
 									</li>
 								</ul>
