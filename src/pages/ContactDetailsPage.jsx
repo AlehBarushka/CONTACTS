@@ -4,10 +4,10 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteCurrentContact,
-  getContact,
   addCurrentGroup,
   deleteCurrentGroup,
-} from '../redux/slices/contactSlice';
+} from '../redux/slices/contactsSlice';
+import { getContact } from '../redux/actions/contacts';
 
 import userImg from '../assets/user.png';
 import Title from '../components/Title';
@@ -15,8 +15,9 @@ import Preloader from '../components/Preloader';
 
 const ContactDetailsPage = () => {
   const { contactId } = useParams();
+
   const dispatch = useDispatch();
-  const state = useSelector(state => state.contactsData);
+  const state = useSelector((state) => state.contactsData);
 
   //sending a request to receive current contact by id
   useEffect(() => {
@@ -58,7 +59,9 @@ const ContactDetailsPage = () => {
                   </li>
                   <li className='list-group-item list-group-item-action'>
                     Mobile number:
-                    <span className='ms-1 fw-bold'>{currentContact.mobile}</span>
+                    <span className='ms-1 fw-bold'>
+                      {currentContact.mobile}
+                    </span>
                   </li>
                   <li className='list-group-item list-group-item-action'>
                     Email:
@@ -66,7 +69,9 @@ const ContactDetailsPage = () => {
                   </li>
                   <li className='list-group-item list-group-item-action'>
                     Company:
-                    <span className='ms-1 fw-bold'>{currentContact.company}</span>
+                    <span className='ms-1 fw-bold'>
+                      {currentContact.company}
+                    </span>
                   </li>
                   <li className='list-group-item list-group-item-action'>
                     Title:

@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCurrentContact, getContact, updateContact } from '../redux/slices/contactSlice';
+import { deleteCurrentContact } from '../redux/slices/contactsSlice';
+import { getContact, updateContact } from '../redux/actions/contacts';
 
 import userImg from '../assets/user.png';
 import Preloader from '../components/Preloader';
@@ -13,7 +14,7 @@ const EditContactPage = () => {
   let { contactId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const state = useSelector(state => state.contactsData);
+  const state = useSelector((state) => state.contactsData);
 
   //sending a request to receive current contact by id
   useEffect(() => {
@@ -24,7 +25,7 @@ const EditContactPage = () => {
     };
   }, [dispatch, contactId]);
 
-  const onSubmitForm = async values => {
+  const onSubmitForm = async (values) => {
     dispatch(updateContact({ values, contactId })).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
         navigate('/contacts/list', { replace: true });
@@ -48,12 +49,17 @@ const EditContactPage = () => {
                 onSubmitForm={onSubmitForm}
                 groups={groups}
                 currentGroup={currentGroup}
-                btnColor='warning'>
+                btnColor='warning'
+              >
                 Edit
               </ContactForm>
             </div>
             <div className='col-md-6'>
-              <img src={userImg} alt={`name of current contact`} className='contact-img' />
+              <img
+                src={userImg}
+                alt={`name of current contact`}
+                className='contact-img'
+              />
             </div>
           </div>
         </div>

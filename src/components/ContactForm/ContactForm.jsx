@@ -6,7 +6,13 @@ import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
-const ContactForm = ({ onSubmitForm, groups, btnColor, contactData, children }) => {
+const ContactForm = ({
+  onSubmitForm,
+  groups,
+  btnColor,
+  contactData,
+  children,
+}) => {
   const contactFormSchema = Yup.object().shape({
     name: Yup.string().required('Required'),
     mobile: Yup.number().required('Required'),
@@ -36,7 +42,9 @@ const ContactForm = ({ onSubmitForm, groups, btnColor, contactData, children }) 
             placeholder='Name'
             isInvalid={formik.errors?.name && formik.touched?.name}
           />
-          <Form.Control.Feedback type='invalid'>{formik.errors.name}</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>
+            {formik.errors.name}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className='mb-2'>
           <Form.Control
@@ -47,7 +55,9 @@ const ContactForm = ({ onSubmitForm, groups, btnColor, contactData, children }) 
             placeholder='Mobile number'
             isInvalid={formik.errors?.mobile && formik.touched?.mobile}
           />
-          <Form.Control.Feedback type='invalid'>{formik.errors.mobile}</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>
+            {formik.errors.mobile}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className='mb-2'>
           <Form.Control
@@ -77,10 +87,14 @@ const ContactForm = ({ onSubmitForm, groups, btnColor, contactData, children }) 
           />
         </Form.Group>
         <Form.Group className='mb-2'>
-          <Form.Select name='groupId' value={formik.values.groupId} onChange={formik.handleChange}>
+          <Form.Select
+            name='groupId'
+            value={formik.values.groupId}
+            onChange={formik.handleChange}
+          >
             <option value=''>Select a group</option>
             {groups.length > 0 &&
-              groups.map(group => {
+              groups.map((group) => {
                 return (
                   <option key={group.id} value={group.id}>
                     {group.name}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createContact } from '../redux/slices/contactSlice';
+import { createContact } from '../redux/actions/contacts';
 
 import Title from '../components/Title';
 import ContactForm from '../components/ContactForm';
@@ -10,7 +10,7 @@ import ContactForm from '../components/ContactForm';
 const AddContactPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const groups = useSelector(state => state.contactsData.groups);
+  const groups = useSelector((state) => state.contactsData.groups);
 
   //use local state for ContactForm component
   const [contactFields] = useState({
@@ -22,7 +22,7 @@ const AddContactPage = () => {
     title: '',
   });
 
-  const onSubmitForm = async values => {
+  const onSubmitForm = async (values) => {
     dispatch(createContact(values)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
         navigate('/contacts/list', { replace: true });
@@ -40,7 +40,8 @@ const AddContactPage = () => {
               contactData={contactFields}
               groups={groups}
               onSubmitForm={onSubmitForm}
-              btnColor='success'>
+              btnColor='success'
+            >
               Add
             </ContactForm>
           </div>
