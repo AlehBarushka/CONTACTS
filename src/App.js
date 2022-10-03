@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
@@ -19,7 +19,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         const currentUser = {
           id: user.uid,
@@ -40,8 +40,11 @@ const App = () => {
         <Route path='/signup' element={<SignUpPage />} />
         <Route path='/contacts/list' element={<ContactsPage />} />
         <Route path='/contacts/add' element={<AddContactPage />} />
-        <Route path='/contacts/view/:contactId' element={<ContactDetailsPage />} />
         <Route path='/contacts/edit/:contactId' element={<EditContactPage />} />
+        <Route
+          path='/contacts/veiw/:contactId'
+          element={<ContactDetailsPage />}
+        />
       </Routes>
     </>
   );

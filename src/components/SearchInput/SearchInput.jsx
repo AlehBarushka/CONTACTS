@@ -7,7 +7,11 @@ const SearchInput = () => {
         <form className='row'>
           <div className='col'>
             <div className='mb-2'>
-              <input type='text' className='form-control' placeholder='Search names...' />
+              <input
+                type='text'
+                className='form-control'
+                placeholder='Search names...'
+              />
             </div>
           </div>
           <div className='col'>

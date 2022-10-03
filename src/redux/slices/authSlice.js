@@ -1,45 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { firebaseAuth } from '../../services/firebase/auth';
+import { signUp, login, logout } from '../actions/auth';
 
-//actions
-export const signUp = createAsyncThunk('authData/signUp', async (payload, { rejectWithValue }) => {
-  const { email, password, userName } = payload;
-  try {
-    const resData = await firebaseAuth.registerNewUser(email, password, userName);
-    return resData;
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
+const initialState = {
+  isLoading: false,
+  isAuth: false,
+  error: null,
+  currentUser: null,
+};
 
-export const logIn = createAsyncThunk('authData/logIn', async (payload, { rejectWithValue }) => {
-  const { email, password } = payload;
-  try {
-    const resData = await firebaseAuth.logIn(email, password);
-    return resData;
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
-
-export const logOut = createAsyncThunk('authData/logOut', async (_, { rejectWithValue }) => {
-  try {
-    await firebaseAuth.logOut();
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
-
-//slice
 const authSlice = createSlice({
   name: 'authData',
-  initialState: {
-    isLoading: false,
-    isAuth: false,
-    error: null,
-    currentUser: null,
-  },
+  initialState: initialState,
   reducers: {
     setCurrentUser(state, { payload }) {
       state.isAuth = true;
@@ -48,10 +20,10 @@ const authSlice = createSlice({
     },
   },
   extraReducers: {
-    [signUp.pending]: state => {
+    [signUp.pending]: (state) => {
       state.isLoading = true;
     },
-    [signUp.fulfilled]: state => {
+    [signUp.fulfilled]: (state) => {
       state.isLoading = false;
       state.isAuth = true;
       state.error = null;
@@ -62,30 +34,30 @@ const authSlice = createSlice({
       state.currentUser = null;
       state.error = payload;
     },
-    [logIn.pending]: state => {
+    [login.pending]: (state) => {
       state.isLoading = true;
     },
-    [logIn.fulfilled]: state => {
+    [login.fulfilled]: (state) => {
       state.isLoading = false;
       state.isAuth = true;
       state.error = null;
     },
-    [logIn.rejected]: (state, { payload }) => {
+    [login.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.isAuth = false;
       state.currentUser = null;
       state.error = payload;
     },
-    [logOut.fulfilled]: state => {
+    [logout.fulfilled]: (state) => {
       state.isAuth = false;
       state.error = null;
       state.currentUser = null;
     },
-    [logOut.rejected]: (state, { payload }) => {
+    [logout.rejected]: (state, { payload }) => {
       state.error = payload;
     },
   },
 });
 
-export const { setCurrentUser, setCurrentUserFail } = authSlice.actions;
+export const { setCurrentUser } = authSlice.actions;
 export default authSlice.reducer;
